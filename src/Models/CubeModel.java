@@ -60,14 +60,34 @@ public static Vector3f[] PX_POS = {
 			
 	};
 	
-	public static Vector2f[] UV = {
-			
+	
+	public static Vector3f[] voxelVertices = {
+		new Vector3f(0.0f, 0.0f, 0.0f),
+		new Vector3f(1.0f, 0.0f, 0.0f),
+		new Vector3f(1.0f, 1.0f, 0.0f),
+		new Vector3f(0.0f, 1.0f, 0.0f),
+		new Vector3f(0.0f, 0.0f, 1.0f),
+		new Vector3f(1.0f, 0.0f, 1.0f),
+		new Vector3f(1.0f, 1.0f, 1.0f),
+		new Vector3f(0.0f, 1.0f, 1.0f)
+	};
+	
+	public static int[][] voxelIndices = {
+		{ 0, 3, 1, 1, 3, 2 }, // NZ 
+		{ 5, 6, 4, 4, 6, 7 }, // PZ
+		{ 3, 7, 2, 2, 7, 6 }, // PY
+		{ 1, 5, 0, 0, 5, 4 }, // NY
+		{ 4, 7, 0, 0, 7, 3 }, // PX
+		{ 1, 1, 5, 5, 2, 6 }, // NX
+	};
+	
+	public static Vector2f[] UV = {	
 			new Vector2f(0.f, 0.f),
 			new Vector2f(0.f, 1.f),
-			new Vector2f(1.f, 1.f),
-			new Vector2f(1.f, 1.f),
 			new Vector2f(1.f, 0.f),
-			new Vector2f(0.f, 0.f)	
+			new Vector2f(1.f, 0.f),
+			new Vector2f(0.f, 1.f),
+			new Vector2f(1.f, 1.f)	
 	};
 	
 public static Vector2f[] UV_PX = {

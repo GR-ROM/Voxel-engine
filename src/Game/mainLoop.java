@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
@@ -15,7 +17,6 @@ import org.lwjgl.util.vector.Vector3f;
 import Block.Block;
 import Block.Chunk;
 import Block.ChunkMesh;
-import Block.Light;
 import Block.World;
 import Engine.Camera;
 import Engine.DisplayManager;
@@ -28,6 +29,7 @@ import Models.RawModel;
 import Models.TexturedModel;
 import Shaders.StaticShader;
 import Textures.ModelTexture;
+import Toolbox.Vector2i;
 
 public class mainLoop {
 	
@@ -42,67 +44,64 @@ public class mainLoop {
 	}
 
 	public static void main(String[] args) {
-		boolean space_dn;
 		DisplayManager.createDisplay();
 		Loader loader=new Loader();
 		StaticShader shader=new StaticShader();
 		Renderer render=new Renderer(shader);
 		
+		Map<Vector2i, Chunk> chunks = new HashMap<Vector2i, Chunk>();
+		World world=new World(chunks, new ModelTexture(loader.loadTexture("dirtTex")));
 		
-		
-		List <Block> blocks = new ArrayList<Block>();
-		List<Entity> enities = new ArrayList<Entity>();
-		Map<Vector2f, Chunk> chunks = new HashMap<Vector2f, Chunk>();
-		World world=new World(chunks, new ModelTexture(loader.loadTexture("res/dirt")));
-		
-		
-		space_dn=false;
-		
-		for (int x = 0; x < 32; x++) {
-			for (int z = 0; z < 32; z++) { 
+		for (int x = 0; x != 16; x++) {
+			for (int z = 0; z != 16; z++) { 
 			//	int max_y=getRandomNumberInRange(0, 4);
-				for (int y = 0; y < 5; y++) { 
-					blocks.add(new Block(x, y, z, (short)1));
+				for (int y = 0; y != 16; y++) {
+					if (y>6) {
+						if (world.setBlock(x, y, z, new Block(Block.AIR))==null){
+							world.spawnNewChunk(x, z);
+							world.setBlock(x, y, z, new Block(Block.AIR));
+						}
+					} else {
+						if (world.setBlock(x, y, z, new Block(Block.DIRT))==null){
+							world.spawnNewChunk(x, z);
+							world.setBlock(x, y, z, new Block(Block.DIRT));
+						}						
+					}
 				}
 			}
 		}
 		
-		Light light=new Light(16, 2, 16, (short)0, (short)15);
+		for (Vector2i vec: world.chunks.keySet()) {
+			world.getChunks().get(vec).updateMesh();
+		}	
+		
+		
+/*		Light light=new Light(16, 2, 16, (short)0, (short)15);
 		List<Light> lights=new ArrayList<Light>();
 		lights.add(light);
-		
-		
-		for (int x=0;x!=2;x++) {
-			for (int z=0;z!=2;z++) {
-				Chunk chunk = new Chunk(blocks, lights, new Vector3f(x*32, 0f, z*32), texture);
-				chunks.add(chunk);
-			}
-		}
+	*/	
+
+	    
 		
 		Camera camera=new Camera();
-		camera.setPosition(18f, 18f, -5f);
+		camera.setPosition(16f, 12f, 16f);
+		
 		Player player=new Player();
 
 		while (!Display.isCloseRequested()) {
 			camera.move();
 
-			if (Keyboard.isKeyDown(Keyboard.KEY_SPACE) && (!space_dn)) {  //player.getBlockLookAt(camera, chunks, 200);
-				for (Chunk chunk: chunks) {
-					
-					chunk.updateMesh();
-				}
-			} else space_dn=false;
-			
+			if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {  //player.getBlockLookAt(camera, chunks, 200);
+
+			} 
 			
 			render.prepare();
 			shader.start();
 			shader.loadViewMatrix(camera);
 			
-			for (Chunk chunk: chunks) {
-				
-				render.renderChunk(chunk, shader);
-			}
-			
+			for (Vector2i vec: world.chunks.keySet()) {
+				render.renderChunk(world.getChunks().get(vec), shader);
+			}			
 			
 			shader.stop();
 		    DisplayManager.updateDisplay();

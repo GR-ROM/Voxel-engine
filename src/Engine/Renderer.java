@@ -63,8 +63,8 @@ public class Renderer {
 		
 		Matrix4f transformationMatrix=Maths.createTransformationMatrix(chunk.origin, 0, 0, 0, 1);
 		shader.loadTransformationMatrix(transformationMatrix);
-		
-		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, model.getModel().getVertexCount());
+		int vertices= chunk.chunkMesh.positions.length;
+		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, vertices);
 		GL20.glDisableVertexAttribArray(0);
 		GL20.glDisableVertexAttribArray(1);
 		GL20.glDisableVertexAttribArray(2);
