@@ -6,12 +6,12 @@ import org.lwjgl.util.vector.Vector3f;
 public class CubeModel {
 	
 public static Vector3f[] PX_POS = {
-			new Vector3f(0.5f,0.5f,-0.5f),
-			new Vector3f(0.5f,-0.5f,-0.5f),
-			new Vector3f(0.5f,-0.5f,0.5f),
-			new Vector3f(0.5f,-0.5f,0.5f),
-			new Vector3f(0.5f,0.5f,0.5f),
-			new Vector3f(0.5f,0.5f,-0.5f)
+			new Vector3f(0.5f,-0.5f,0.5f),// 3	
+			new Vector3f(0.5f,-0.5f,-0.5f),// 2
+			new Vector3f(0.5f,0.5f,-0.5f), //1
+			new Vector3f(0.5f,0.5f,-0.5f), // 3
+			new Vector3f(0.5f,0.5f,0.5f), // 2
+			new Vector3f(0.5f,-0.5f,0.5f) // 1
 	};
 	
 	public static Vector3f[] NX_POS = {
@@ -24,12 +24,12 @@ public static Vector3f[] PX_POS = {
 	};
 	
 	public static Vector3f[] PY_POS = {
-			new Vector3f(-0.5f,0.5f,0.5f),
-			new Vector3f(-0.5f,0.5f,-0.5f),
-			new Vector3f(0.5f,0.5f,-0.5f),
-			new Vector3f(0.5f,0.5f,-0.5f),
-			new Vector3f(0.5f,0.5f,0.5f),
-			new Vector3f(-0.5f,0.5f,0.5f)
+			new Vector3f(0.5f,0.5f,-0.5f), // 3
+			new Vector3f(-0.5f,0.5f,-0.5f), // 2
+			new Vector3f(-0.5f,0.5f,0.5f), // 1
+			new Vector3f(-0.5f,0.5f,0.5f), //3
+			new Vector3f(0.5f,0.5f,0.5f), // 2
+			new Vector3f(0.5f,0.5f,-0.5f), // 1
 	};
 	
 	public static Vector3f[] NY_POS = {
@@ -51,13 +51,12 @@ public static Vector3f[] PX_POS = {
 	};
 	
 	public static Vector3f[] NZ_POS = {
-			new Vector3f(-0.5f,0.5f,-0.5f),
-			new Vector3f(-0.5f,-0.5f,-0.5f),
-			new Vector3f(0.5f,-0.5f,-0.5f),
-			new Vector3f(0.5f,-0.5f,-0.5f),
-			new Vector3f(0.5f,0.5f,-0.5f),
-			new Vector3f(-0.5f,0.5f,-0.5f)
-			
+			new Vector3f(0.5f,-0.5f,-0.5f), // 3
+			new Vector3f(-0.5f,-0.5f,-0.5f), // 2
+			new Vector3f(-0.5f,0.5f,-0.5f), // 1
+			new Vector3f(-0.5f,0.5f,-0.5f), // 3
+			new Vector3f(0.5f,0.5f,-0.5f), // 2
+			new Vector3f(0.5f,-0.5f,-0.5f) // 1			
 	};
 	
 	

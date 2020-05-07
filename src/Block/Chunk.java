@@ -37,10 +37,12 @@ public class Chunk {
 		if ((x>=Chunk.CHUNK_WIDTH) || (x<0)) return emptyBlock;
 		if ((y>=Chunk.CHUNK_WIDTH) || (y<0)) return emptyBlock;
 		if ((z>=Chunk.CHUNK_WIDTH) || (z<0)) return emptyBlock;
-		int index=x+(y*Chunk.CHUNK_WIDTH)+(z*(Chunk.CHUNK_WIDTH*Chunk.CHUNK_WIDTH));
+
+		int index=x+(y*Chunk.CHUNK_WIDTH)+(z*(Chunk.CHUNK_WIDTH*Chunk.CHUNK_WIDTH));		
 		if (blocks[index]==null) 
 			return emptyBlock;
-		return blocks[index];
+		Block block=blocks[index];
+		return block;
 	}
 	
 	public void setBlock(int x, int y, int z, Block block) {
@@ -59,6 +61,7 @@ public class Chunk {
 	public Chunk(int x, int z, ModelTexture texture) {
 		this.blocks=new Block[Chunk.CHUNK_WIDTH*Chunk.CHUNK_WIDTH*Chunk.CHUNK_WIDTH];
 		this.origin=new Vector3f(x, 0, z);
+		setHasMesh(false);
 		loadResources(texture);
 	}
 	

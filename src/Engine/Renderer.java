@@ -28,8 +28,8 @@ public class Renderer {
 	}
 	
 	public void prepare() {	
-	//	GL11.glEnable(GL11.GL_CULL_FACE);
-	//	GL11.glCullFace(GL11.GL_BACK);
+		GL11.glEnable(GL11.GL_CULL_FACE);
+		GL11.glCullFace(GL11.GL_BACK);
 	
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glClearColor(0.4f, 0.7f, 1.0f, 1);

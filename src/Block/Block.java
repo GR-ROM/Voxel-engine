@@ -18,7 +18,6 @@ public class Block {
 		this.lightLevel=light;
 	}
 	
-	
 	public Block(Short type) {
 		this.transparent=false;		
 		if (type==AIR) this.transparent=true;		

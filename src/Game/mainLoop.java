@@ -52,23 +52,16 @@ public class mainLoop {
 		Map<Vector2i, Chunk> chunks = new HashMap<Vector2i, Chunk>();
 		World world=new World(chunks, new ModelTexture(loader.loadTexture("dirtTex")));
 		
-		for (int x = 0; x != 16; x++) {
-			for (int z = 0; z != 16; z++) { 
+		for (int x = 0; x != 512; x++) {
+			for (int z = 0; z != 512; z++) { 
 			//	int max_y=getRandomNumberInRange(0, 4);
 				for (int y = 0; y != 16; y++) {
-					if (y>6) {
-						if (world.setBlock(x, y, z, new Block(Block.AIR))==null){
-							world.spawnNewChunk(x, z);
-							world.setBlock(x, y, z, new Block(Block.AIR));
-						}
-					} else {
 						if (world.setBlock(x, y, z, new Block(Block.DIRT))==null){
 							world.spawnNewChunk(x, z);
 							world.setBlock(x, y, z, new Block(Block.DIRT));
 						}						
 					}
 				}
-			}
 		}
 		
 		for (Vector2i vec: world.chunks.keySet()) {

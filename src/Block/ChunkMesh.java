@@ -64,9 +64,9 @@ public class ChunkMesh {
 		Block block;
 			for (int x=0; x!=Chunk.CHUNK_WIDTH; x++) {
 				for (int y=0; y!=Chunk.CHUNK_WIDTH ; y++) {
-					boolean px=true; boolean py=true; boolean pz=true; 
-					boolean nx=true; boolean ny=true; boolean nz=true;
 					for (int z=0; z!=Chunk.CHUNK_WIDTH; z++) {
+						boolean px=true; boolean py=true; boolean pz=true; 
+						boolean nx=true; boolean ny=true; boolean nz=true;
 						block=chunk.getBlock(x, y, z);
 						blockPos.x=x;
 						blockPos.y=y;
@@ -83,19 +83,19 @@ public class ChunkMesh {
 						if (!px) {
 							for (int k=0;k!=6;k++) {
 								Vector3f.add(blockPos, CubeModel.PX_POS[k], t);
-								vertices.add(new Vertex(new Vector3f(t), CubeModel.UV[k], CubeModel.NORMALS[k], lightToVector(4)));
+								vertices.add(new Vertex(new Vector3f(t), CubeModel.UV[k], CubeModel.NORMALS[k], lightToVector(15)));
 							}
 						}
 						if (!py) {  
 							for (int k=0;k!=6;k++) { 
 								Vector3f.add(blockPos, CubeModel.PY_POS[k], t);
-								vertices.add(new Vertex(new Vector3f(t), CubeModel.UV[k], CubeModel.NORMALS[k], lightToVector(8)));
+								vertices.add(new Vertex(new Vector3f(t), CubeModel.UV[k], CubeModel.NORMALS[k], lightToVector(10)));
 							}
 						}
 						if (!pz) {  
 							for (int k=0;k!=6;k++) { 
 								Vector3f.add(blockPos, CubeModel.PZ_POS[k], t);
-								vertices.add(new Vertex(new Vector3f(t), CubeModel.UV[k], CubeModel.NORMALS[k], lightToVector(15)));
+								vertices.add(new Vertex(new Vector3f(t), CubeModel.UV[k], CubeModel.NORMALS[k], lightToVector(6)));
 							}
 						}
 						if (!nx) {  
