@@ -7,8 +7,10 @@ import Textures.ModelTexture;
 
 public class Chunk {
 	
-	public final static int CHUNK_SIZE=64;
-	public final static int CHUNK_SIZE_SQR=1025;
+	public final static int CHUNK_WIDTH=16;
+	public final static int CHUNK_SIZE_SQR=CHUNK_WIDTH*CHUNK_WIDTH;
+	public final static int CHUNK_HEIGHT=16;
+	public final static int CHUNK_SIZE_CUBE=CHUNK_SIZE_SQR*CHUNK_HEIGHT;
 	public Block[] blocks;
 	public Vector3f origin;
 	public ChunkMesh chunkMesh;
@@ -16,8 +18,10 @@ public class Chunk {
 	private ModelTexture textureAtlas;
 	private TexturedModel texturedModel;
 	private boolean hasMesh;
+	private Block emptyBlock;
 	
 	private void loadResources(ModelTexture texture) {
+		this.emptyBlock=new Block(Block.AIR);
 		this.chunkMesh=new ChunkMesh(this);
 		this.loader=new Loader();
 		this.setTextureAtlas(texture);
@@ -25,8 +29,27 @@ public class Chunk {
 		this.setTexturedModel(new TexturedModel(this.loader.loadToVAO(chunkMesh.positions, chunkMesh.uvs, chunkMesh.light), texture));		
 	}
 	
+	public final static int coordToIndex(int x, int y, int z) {
+		return x+(y*Chunk.CHUNK_WIDTH)+(z*Chunk.CHUNK_SIZE_SQR);
+	}
+	
+	public Block getBlock(int x, int y, int z) {
+		if ((x>=Chunk.CHUNK_WIDTH) || (x<0)) return emptyBlock;
+		if ((y>=Chunk.CHUNK_WIDTH) || (y<0)) return emptyBlock;
+		if ((z>=Chunk.CHUNK_WIDTH) || (z<0)) return emptyBlock;
+		int index=x+(y*Chunk.CHUNK_WIDTH)+(z*(Chunk.CHUNK_WIDTH*Chunk.CHUNK_WIDTH));
+		if (blocks[index]==null) 
+			return emptyBlock;
+		return blocks[index];
+	}
+	
+	public void setBlock(int x, int y, int z, Block block) {
+		int index=x+(y*Chunk.CHUNK_WIDTH)+(z*(Chunk.CHUNK_WIDTH*Chunk.CHUNK_WIDTH));
+		blocks[index]=block;
+	}
+	
 	public Chunk(Vector3f origin, ModelTexture texture) {
-		this.blocks=new Block[CHUNK_SIZE*CHUNK_SIZE_SQR];
+		this.blocks=new Block[CHUNK_SIZE_CUBE];
 		this.origin=origin;
 		this.origin.y=0;
 		setHasMesh(false);
@@ -34,10 +57,8 @@ public class Chunk {
 	}
 	
 	public Chunk(int x, int z, ModelTexture texture) {
-		this.blocks=new Block[CHUNK_SIZE*CHUNK_SIZE_SQR];
-		this.origin.x=x;
-		this.origin.z=z;
-		this.origin.y=0;
+		this.blocks=new Block[Chunk.CHUNK_WIDTH*Chunk.CHUNK_WIDTH*Chunk.CHUNK_WIDTH];
+		this.origin=new Vector3f(x, 0, z);
 		loadResources(texture);
 	}
 	

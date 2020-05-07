@@ -9,7 +9,7 @@ import Models.CubeModel;
 
 public class ChunkMesh {
     private List<Vertex> vertices;
-    private List<Integer> indicesList;
+    //private List<Integer> indicesList;
 	private List<Float> positionsList;
 	private List<Float> uvsList;
 	private List<Float> normalsList;
@@ -25,7 +25,7 @@ public class ChunkMesh {
 
 		vertices = new ArrayList<Vertex>();
 		positionsList = new ArrayList<Float>();
-		indicesList = new ArrayList<Integer>();
+		//indicesList = new ArrayList<Integer>();
 		uvsList = new ArrayList<Float>();
 		normalsList = new ArrayList<Float>();
 		lightsList=new ArrayList<Float>();
@@ -57,70 +57,68 @@ public class ChunkMesh {
 	}
 	
 	private void buildMesh(Chunk chunk) {
+		Vector3f blockPos=new Vector3f(0, 0, 0);
+		Vector3f t=new Vector3f(0, 0, 0);
 		Vector3f lightPos=new Vector3f(0f, 0f, 0f);
-		Vector3f blockPos=new Vector3f(0f, 0f, 0f);
-		Vector4f lightVec=new Vector4f(0.1f, 0.1f, 0.1f, 1f);
-			for (int i = 0; i < chunk.blocks.size(); i++) {
-				Block blockI = chunk.blocks.get(i);
-				boolean px = false, nx = false, py = false, ny = false, pz = false, nz = false;
-				for (int j = 0; j < chunk.blocks.size(); j++) {
-					Block blockJ = chunk.blocks.get(j);
-					
-					if (((blockI.x+1)==(blockJ.x)) && ((blockI.y)==(blockJ.y)) && ((blockI.z)==(blockJ.z))) px=true; 
-					if (((blockI.x-1)==(blockJ.x)) && ((blockI.y)==(blockJ.y)) && ((blockI.z)==(blockJ.z))) nx=true; 
-					if (((blockI.x)==(blockJ.x)) && ((blockI.y+1)==(blockJ.y)) && ((blockI.z)==(blockJ.z))) py=true; 
-					if (((blockI.x)==(blockJ.x)) && ((blockI.y-1)==(blockJ.y)) && ((blockI.z)==(blockJ.z))) ny=true; 
-					if (((blockI.x)==(blockJ.x)) && ((blockI.y)==(blockJ.y)) && ((blockI.z+1)==(blockJ.z))) pz=true; 
-					if (((blockI.x)==(blockJ.x)) && ((blockI.y)==(blockJ.y)) && ((blockI.z-1)==(blockJ.z))) nz=true; 
-			}
-			for (int l=0;l!=chunk.lights.size();l++) {
-				Light light=chunk.lights.get(l);
-				lightPos.x=light.x;
-				lightPos.y=light.y;
-				lightPos.z=light.z;
-					
-				blockPos.x=blockI.x;
-				blockPos.y=blockI.y;
-				blockPos.z=blockI.z;
-					
-				int distToLight=getDistanceBetweenVectors(blockPos, lightPos);
-				short lightLevel=(short)(light.lightLevel-distToLight);
-				if (distToLight<16) {
-						blockI.lightLevel=(short)(lightLevel);
-				}					
-			}
-				
-			if (!px) {
-				for (int k=0;k!=6;k++) {
-					vertices.add(new Vertex(new Vector3f(CubeModel.PX_POS[k].x+blockI.x, CubeModel.PX_POS[k].y+blockI.y, CubeModel.PX_POS[k].z+blockI.z), CubeModel.UV[k], CubeModel.NORMALS[k], lightToVector(blockI.lightLevel)));
+		Vector4f lightVec=new Vector4f(0.4f, 0.4f, 0.4f, 1f);
+		Block block;
+			for (int x=0; x!=Chunk.CHUNK_WIDTH; x++) {
+				for (int y=0; y!=Chunk.CHUNK_WIDTH ; y++) {
+					boolean px=true; boolean py=true; boolean pz=true; 
+					boolean nx=true; boolean ny=true; boolean nz=true;
+					for (int z=0; z!=Chunk.CHUNK_WIDTH; z++) {
+						block=chunk.getBlock(x, y, z);
+						blockPos.x=x;
+						blockPos.y=y;
+						blockPos.z=z;
+						if (block==null) break;
+						if (block.type==Block.AIR) break;
+						if (chunk.getBlock(x+1, y, z).transparent) { px=false; }
+						if (chunk.getBlock(x-1, y, z).transparent) { nx=false; }
+						if (chunk.getBlock(x, y+1, z).transparent) { py=false; }
+						if (chunk.getBlock(x, y-1, z).transparent) { ny=false; }
+						if (chunk.getBlock(x, y, z+1).transparent) { pz=false; }
+						if (chunk.getBlock(x, y, z-1).transparent) { nz=false; }
+					 	
+						if (!px) {
+							for (int k=0;k!=6;k++) {
+								Vector3f.add(blockPos, CubeModel.PX_POS[k], t);
+								vertices.add(new Vertex(new Vector3f(t), CubeModel.UV[k], CubeModel.NORMALS[k], lightToVector(4)));
+							}
+						}
+						if (!py) {  
+							for (int k=0;k!=6;k++) { 
+								Vector3f.add(blockPos, CubeModel.PY_POS[k], t);
+								vertices.add(new Vertex(new Vector3f(t), CubeModel.UV[k], CubeModel.NORMALS[k], lightToVector(8)));
+							}
+						}
+						if (!pz) {  
+							for (int k=0;k!=6;k++) { 
+								Vector3f.add(blockPos, CubeModel.PZ_POS[k], t);
+								vertices.add(new Vertex(new Vector3f(t), CubeModel.UV[k], CubeModel.NORMALS[k], lightToVector(15)));
+							}
+						}
+						if (!nx) {  
+							for (int k=0;k!=6;k++) {
+								Vector3f.add(blockPos, CubeModel.NX_POS[k], t);
+								vertices.add(new Vertex(new Vector3f(t), CubeModel.UV[k], CubeModel.NORMALS[k], lightToVector(1)));
+							}
+						}
+						if (!ny) {  
+							for (int k=0;k!=6;k++) {
+								Vector3f.add(blockPos, CubeModel.NY_POS[k], t);
+								vertices.add(new Vertex(new Vector3f(t), CubeModel.UV[k], CubeModel.NORMALS[k], lightToVector(1)));
+							}
+						}
+						if (!nz) {  
+							for (int k=0;k!=6;k++) {
+								Vector3f.add(blockPos, CubeModel.NZ_POS[k], t);
+								vertices.add(new Vertex(new Vector3f(t), CubeModel.UV[k], CubeModel.NORMALS[k], lightToVector(1)));
+							}
+						}
+					}
 				}
 			}
-			if (!py) {  
-				for (int k=0;k!=6;k++) {
-					vertices.add(new Vertex(new Vector3f(CubeModel.PY_POS[k].x+blockI.x, CubeModel.PY_POS[k].y+blockI.y, CubeModel.PY_POS[k].z+blockI.z), CubeModel.UV[k], CubeModel.NORMALS[k],  lightToVector(blockI.lightLevel)));
-				}
-			}
-			if (!pz) {  
-				for (int k=0;k!=6;k++) {
-					vertices.add(new Vertex(new Vector3f(CubeModel.PZ_POS[k].x+blockI.x, CubeModel.PZ_POS[k].y+blockI.y, CubeModel.PZ_POS[k].z+blockI.z), CubeModel.UV[k], CubeModel.NORMALS[k],  lightToVector(blockI.lightLevel)));
-				}
-			}
-			if (!nx) {  
-				for (int k=0;k!=6;k++) {
-					vertices.add(new Vertex(new Vector3f(CubeModel.NX_POS[k].x+blockI.x, CubeModel.NX_POS[k].y+blockI.y, CubeModel.NX_POS[k].z+blockI.z), CubeModel.UV[k], CubeModel.NORMALS[k],  lightToVector(blockI.lightLevel)));
-				}
-			}
-			if (!ny) {  
-				for (int k=0;k!=6;k++) {
-					vertices.add(new Vertex(new Vector3f(CubeModel.NY_POS[k].x+blockI.x, CubeModel.NY_POS[k].y+blockI.y, CubeModel.NY_POS[k].z+blockI.z), CubeModel.UV[k], CubeModel.NORMALS[k],  lightToVector(blockI.lightLevel)));
-				}
-			}
-			if (!nz) {  
-				for (int k=0;k!=6;k++) {
-					vertices.add(new Vertex(new Vector3f(CubeModel.NZ_POS[k].x+blockI.x, CubeModel.NZ_POS[k].y+blockI.y, CubeModel.NZ_POS[k].z+blockI.z), CubeModel.UV[k], CubeModel.NORMALS[k],  lightToVector(blockI.lightLevel)));
-				}
-			}
-		}
 	}
 	
 	private void populateLists() {
@@ -143,7 +141,7 @@ public class ChunkMesh {
 		uvs = new float[uvsList.size()];
 		normals = new float[normalsList.size()];
 		light = new float[lightsList.size()];
-		//indices = new int[indicesList.size()];
+	//	indices = new int[indicesList.size()];
 		
 		for (int i = 0; i < positionsList.size(); i++) positions[i] = positionsList.get(i);
 		for (int i = 0; i < uvsList.size(); i++) uvs[i] = uvsList.get(i);
