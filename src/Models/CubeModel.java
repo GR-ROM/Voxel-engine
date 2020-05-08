@@ -81,12 +81,13 @@ public static Vector3f[] PX_POS = {
 	};
 	
 	public static Vector2f[] UV = {	
+			new Vector2f(1.f, 1.f),new Vector2f(1.f, 0.f),
 			new Vector2f(0.f, 0.f),
-			new Vector2f(0.f, 1.f),
-			new Vector2f(1.f, 0.f),
-			new Vector2f(1.f, 0.f),
-			new Vector2f(0.f, 1.f),
-			new Vector2f(1.f, 1.f)	
+			
+			
+			new Vector2f(0.f, 0.f),new Vector2f(1.f, 0.f),new Vector2f(1.f, 1.f)
+			
+			
 	};
 	
 public static Vector2f[] UV_PX = {

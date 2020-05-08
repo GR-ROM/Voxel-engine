@@ -50,12 +50,12 @@ public class mainLoop {
 		Renderer render=new Renderer(shader);
 		
 		Map<Vector2i, Chunk> chunks = new HashMap<Vector2i, Chunk>();
-		World world=new World(chunks, new ModelTexture(loader.loadTexture("dirtTex")));
+		World world=new World(chunks, new ModelTexture(loader.loadTexture("defaultPack")));
 		
-		for (int x = 0; x != 512; x++) {
-			for (int z = 0; z != 512; z++) { 
+		for (int x = 0; x != 128; x++) {
+			for (int z = 0; z != 128; z++) { 
 			//	int max_y=getRandomNumberInRange(0, 4);
-				for (int y = 0; y != 16; y++) {
+				for (int y = 0; y != 15; y++) {
 						if (world.setBlock(x, y, z, new Block(Block.DIRT))==null){
 							world.spawnNewChunk(x, z);
 							world.setBlock(x, y, z, new Block(Block.DIRT));
@@ -63,19 +63,24 @@ public class mainLoop {
 					}
 				}
 		}
+		long timeStart=0;
+		long timeStop=0;
+		
+		timeStart=System.currentTimeMillis();
 		
 		for (Vector2i vec: world.chunks.keySet()) {
 			world.getChunks().get(vec).updateMesh();
 		}	
 		
-		
-/*		Light light=new Light(16, 2, 16, (short)0, (short)15);
+		timeStop=System.currentTimeMillis();
+		timeStop-=timeStart;
+		System.out.printf(world.getChunks().size()+" chunks updated in: "+timeStop+" ms\r\n");
+/*		
+	    Light light=new Light(16, 2, 16, (short)0, (short)15);
 		List<Light> lights=new ArrayList<Light>();
 		lights.add(light);
 	*/	
 
-	    
-		
 		Camera camera=new Camera();
 		camera.setPosition(16f, 12f, 16f);
 		
@@ -96,7 +101,7 @@ public class mainLoop {
 				render.renderChunk(world.getChunks().get(vec), shader);
 			}			
 			
-			shader.stop();
+			shader.stop();		    
 		    DisplayManager.updateDisplay();
 		}
 		shader.cleanUp();

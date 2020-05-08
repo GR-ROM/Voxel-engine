@@ -27,7 +27,7 @@ public RawModel loadToVAO(float[] vertices, int[] indices, float[] uv, float[] l
 		int vaoID = createVAO();
 		storeDataInAttributeList(0, 3, vertices);
 		storeDataInAttributeList(1, 2, uv);
-		storeDataInAttributeList(2, 4, lights);
+		storeDataInAttributeList(2, 1, lights);
 		bindIndicesBuffer(indices);
 		GL30.glBindVertexArray(0);
 		return new RawModel(vaoID, indices.length);
@@ -37,7 +37,7 @@ public RawModel loadToVAO(float[] vertices, int[] indices, float[] uv, float[] l
 		int vaoID = createVAO();
 		storeDataInAttributeList(0, 3, vertices);
 		storeDataInAttributeList(1, 2, uvs);
-		storeDataInAttributeList(2, 4, lights);
+		storeDataInAttributeList(2, 1, lights);
 		GL30.glBindVertexArray(0);
 		
 		return new RawModel(vaoID, vertices.length);
@@ -47,14 +47,14 @@ public RawModel loadToVAO(float[] vertices, int[] indices, float[] uv, float[] l
 	public void reLoadToVAO(float[] vertices, float[] uvs, float[] lights) {
 		storeDataInAttributeList(vbos.get(0), 0, 3, vertices);
 		storeDataInAttributeList(vbos.get(1), 1, 2, uvs);
-		storeDataInAttributeList(vbos.get(2), 2, 4, lights);
+		storeDataInAttributeList(vbos.get(2), 2, 1, lights);
 		GL30.glBindVertexArray(0);		
 	}
 	
 	public void reLoadToVAO(float[] vertices, int[] indices, float[] uvs, float[] lights) {
 		storeDataInAttributeList(vbos.get(0), 0, 3, vertices);
 		storeDataInAttributeList(vbos.get(1), 1, 2, uvs);
-		storeDataInAttributeList(vbos.get(2), 2, 4, lights);
+		storeDataInAttributeList(vbos.get(2), 2, 1, lights);
 		bindIndicesBuffer(indices);
 		GL30.glBindVertexArray(0);		
 	}

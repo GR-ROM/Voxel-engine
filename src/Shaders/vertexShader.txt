@@ -2,7 +2,8 @@
 
 in vec3 position;
 in vec2 textureCoords;
-in vec4 light;
+in float light;
+
 out vec2 pass_textureCoords;
 out vec4 pass_light;
 
@@ -14,5 +15,6 @@ void main()
 {
 	gl_Position=projectionMatrix*viewMatrix*transformationMatrix*vec4(position, 1.0);
 	pass_textureCoords=textureCoords;
-	pass_light=light;
+	float t=pow(light / 16f, 1.4f)+0.1;
+	pass_light=vec4(t, t, t, 1);
 }

@@ -50,12 +50,6 @@ public class ChunkMesh {
 		return length;
 	}
 	
-	private Vector4f lightToVector(int light) {
-		float baseColor = .086f;
-		float colorValue = (float) (Math.pow(light / 16f, 1.4f) + baseColor );
-		return new Vector4f(colorValue, colorValue, colorValue, 1);
-	}
-	
 	private void buildMesh(Chunk chunk) {
 		Vector3f blockPos=new Vector3f(0, 0, 0);
 		Vector3f t=new Vector3f(0, 0, 0);
@@ -83,43 +77,43 @@ public class ChunkMesh {
 						if (!px) {
 							for (int k=0;k!=6;k++) {
 								Vector3f.add(blockPos, CubeModel.PX_POS[k], t);
-								vertices.add(new Vertex(new Vector3f(t), CubeModel.UV[k], CubeModel.NORMALS[k], lightToVector(15)));
+								vertices.add(new Vertex(new Vector3f(t), CubeModel.UV[k], CubeModel.NORMALS[k], 15));
 							}
 						}
 						if (!py) {  
 							for (int k=0;k!=6;k++) { 
 								Vector3f.add(blockPos, CubeModel.PY_POS[k], t);
-								vertices.add(new Vertex(new Vector3f(t), CubeModel.UV[k], CubeModel.NORMALS[k], lightToVector(10)));
+								vertices.add(new Vertex(new Vector3f(t), CubeModel.UV[k], CubeModel.NORMALS[k], 10));
 							}
 						}
 						if (!pz) {  
 							for (int k=0;k!=6;k++) { 
 								Vector3f.add(blockPos, CubeModel.PZ_POS[k], t);
-								vertices.add(new Vertex(new Vector3f(t), CubeModel.UV[k], CubeModel.NORMALS[k], lightToVector(6)));
+								vertices.add(new Vertex(new Vector3f(t), CubeModel.UV[k], CubeModel.NORMALS[k], 6));
 							}
 						}
 						if (!nx) {  
 							for (int k=0;k!=6;k++) {
 								Vector3f.add(blockPos, CubeModel.NX_POS[k], t);
-								vertices.add(new Vertex(new Vector3f(t), CubeModel.UV[k], CubeModel.NORMALS[k], lightToVector(1)));
+								vertices.add(new Vertex(new Vector3f(t), CubeModel.UV[k], CubeModel.NORMALS[k], 1));
 							}
 						}
 						if (!ny) {  
 							for (int k=0;k!=6;k++) {
 								Vector3f.add(blockPos, CubeModel.NY_POS[k], t);
-								vertices.add(new Vertex(new Vector3f(t), CubeModel.UV[k], CubeModel.NORMALS[k], lightToVector(1)));
+								vertices.add(new Vertex(new Vector3f(t), CubeModel.UV[k], CubeModel.NORMALS[k], 1));
 							}
 						}
 						if (!nz) {  
 							for (int k=0;k!=6;k++) {
 								Vector3f.add(blockPos, CubeModel.NZ_POS[k], t);
-								vertices.add(new Vertex(new Vector3f(t), CubeModel.UV[k], CubeModel.NORMALS[k], lightToVector(1)));
+								vertices.add(new Vertex(new Vector3f(t), CubeModel.UV[k], CubeModel.NORMALS[k], 1));
 							}
 						}
 					}
 				}
 			}
-	}
+		}
 	
 	private void populateLists() {
 		for (int i=0; i!=vertices.size(); i++) {			
@@ -128,13 +122,10 @@ public class ChunkMesh {
 			positionsList.add(vertices.get(i).positions.z);
 			uvsList.add(vertices.get(i).uvs.x);
 			uvsList.add(vertices.get(i).uvs.y);
-			normalsList.add(vertices.get(i).normals.x);
-			normalsList.add(vertices.get(i).normals.y);
-			normalsList.add(vertices.get(i).normals.z);
-			lightsList.add(vertices.get(i).light.x);
-			lightsList.add(vertices.get(i).light.y);
-			lightsList.add(vertices.get(i).light.z);
-			lightsList.add(vertices.get(i).light.w);
+	//		normalsList.add(vertices.get(i).normals.x);
+	//		normalsList.add(vertices.get(i).normals.y);
+//			normalsList.add(vertices.get(i).normals.z);
+			lightsList.add(vertices.get(i).light);
 		}
 		
 		positions = new float[positionsList.size()];
@@ -145,7 +136,7 @@ public class ChunkMesh {
 		
 		for (int i = 0; i < positionsList.size(); i++) positions[i] = positionsList.get(i);
 		for (int i = 0; i < uvsList.size(); i++) uvs[i] = uvsList.get(i);
-		for (int i = 0; i < normalsList.size(); i++) normals[i] = normalsList.get(i);		
+	//	for (int i = 0; i < normalsList.size(); i++) normals[i] = normalsList.get(i);		
 		for (int i = 0; i != lightsList.size(); i++) light[i]=lightsList.get(i);
 		//for (int i = 0; i < indicesList.size(); i++) indices[i] = indicesList.get(i);
 		cleanup();
