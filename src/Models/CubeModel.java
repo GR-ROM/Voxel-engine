@@ -81,14 +81,37 @@ public static Vector3f[] PX_POS = {
 	};
 	
 	public static Vector2f[] UV = {	
-			new Vector2f(1.f, 1.f),new Vector2f(1.f, 0.f),
-			new Vector2f(0.f, 0.f),
-			
-			
-			new Vector2f(0.f, 0.f),new Vector2f(1.f, 0.f),new Vector2f(1.f, 1.f)
-			
+			new Vector2f(0f, 1f),
+			new Vector2f(1f, 1f),
+			new Vector2f(1f, 0f),
+			new Vector2f(1f, 0f),
+			new Vector2f(0f, 0f),
+			new Vector2f(0f, 1f),
 			
 	};
+	
+	public final static int TOP=0;
+	public final static int BOTTOM=1;
+	public final static int SIDE=2;
+	
+	public static int blockTypeToAtlasTextureIndex(short blockType, int side) {
+		int index=0;
+			if (blockType==Block.Block.STONE) index=3;
+			if (blockType==Block.Block.DIRT) index=2;
+			if (blockType==Block.Block.GRASS) {
+				if (side==SIDE)index=1; else index=0;
+			}
+			return index;
+	}
+	
+	public static Vector2f getUVByIndex(int textureIndex, int uvIndex) {
+		Vector2f pos=new Vector2f(0, 0);
+		float width=1f/16f;
+		int textureIndexY=textureIndex / 16;
+		if (UV[uvIndex].x>0.0f) pos.x=textureIndex*width+width; else pos.x=(textureIndex*width);
+		if (UV[uvIndex].y>0.0f) pos.y=(textureIndexY*width)+width; else pos.y=(textureIndexY*width);
+		return pos;		
+	}
 	
 public static Vector2f[] UV_PX = {
 			
@@ -355,13 +378,12 @@ public static Vector2f[] UV_PX = {
 	};
 	
 	public static Vector3f[] NORMALS = {
-			
-			new Vector3f(0.f, 0.f, 0.f),
-			new Vector3f(0.f, 0.f, 0.f),
-			new Vector3f(0.f, 0.f, 0.f),
-			new Vector3f(0.f, 0.f, 0.f),
-			new Vector3f(0.f, 0.f, 0.f),
-			new Vector3f(0.f, 0.f, 0.f)
+			new Vector3f(1.f, 0.f, 0.f),
+			new Vector3f(0.f, 1.f, 0.f),
+			new Vector3f(0.f, 0.f, 1.f),
+			new Vector3f(-1.0f, 0.f, 0.f),
+			new Vector3f(0.f, -1.0f, 0.f),
+			new Vector3f(0.f, 0.f, -1.0f)
 			
 	};
 	

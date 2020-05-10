@@ -33,21 +33,23 @@ public RawModel loadToVAO(float[] vertices, int[] indices, float[] uv, float[] l
 		return new RawModel(vaoID, indices.length);
 	}
 	
-	public RawModel loadToVAO(float[] vertices, float[] uvs, float[] lights) {
+	public RawModel loadToVAO(float[] vertices, float[] normals, float[] uvs, float[] lights) {
 		int vaoID = createVAO();
 		storeDataInAttributeList(0, 3, vertices);
-		storeDataInAttributeList(1, 2, uvs);
-		storeDataInAttributeList(2, 1, lights);
+		storeDataInAttributeList(1, 2, normals);
+		storeDataInAttributeList(2, 2, uvs);
+		storeDataInAttributeList(3, 1, lights);
 		GL30.glBindVertexArray(0);
 		
 		return new RawModel(vaoID, vertices.length);
 		
 	}
 	
-	public void reLoadToVAO(float[] vertices, float[] uvs, float[] lights) {
+	public void reLoadToVAO(float[] vertices, float[] normals, float[] uvs, float[] lights)  {
 		storeDataInAttributeList(vbos.get(0), 0, 3, vertices);
-		storeDataInAttributeList(vbos.get(1), 1, 2, uvs);
-		storeDataInAttributeList(vbos.get(2), 2, 1, lights);
+		storeDataInAttributeList(vbos.get(1), 1, 3, normals);
+		storeDataInAttributeList(vbos.get(2), 1, 2, uvs);
+		storeDataInAttributeList(vbos.get(3), 2, 1, lights);
 		GL30.glBindVertexArray(0);		
 	}
 	
@@ -133,10 +135,12 @@ public RawModel loadToVAO(float[] vertices, int[] indices, float[] uv, float[] l
 		Texture texture = null;
 		try {
 			texture = TextureLoader.getTexture("PNG", Class.class.getResourceAsStream("/res/" + fileName + ".PNG"));
+			
+			
 			GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL14.GL_TEXTURE_LOD_BIAS, -1);
+			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST_MIPMAP_LINEAR);
+			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+		//	GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL14.GL_TEXTURE_LOD_BIAS, -1);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

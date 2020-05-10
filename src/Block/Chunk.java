@@ -26,7 +26,7 @@ public class Chunk {
 		this.loader=new Loader();
 		this.setTextureAtlas(texture);
 		this.setHasMesh(false);
-		this.setTexturedModel(new TexturedModel(this.loader.loadToVAO(chunkMesh.positions, chunkMesh.uvs, chunkMesh.light), texture));		
+		this.setTexturedModel(new TexturedModel(this.loader.loadToVAO(chunkMesh.positions, chunkMesh.normals, chunkMesh.uvs, chunkMesh.light), texture));		
 	}
 	
 	public final static int coordToIndex(int x, int y, int z) {
@@ -68,7 +68,7 @@ public class Chunk {
 	public void updateMesh() {
 		this.chunkMesh.update(this);
 		this.setHasMesh(true);
-		this.loader.reLoadToVAO(chunkMesh.positions, chunkMesh.uvs, chunkMesh.light);
+		this.loader.reLoadToVAO(chunkMesh.positions, chunkMesh.normals, chunkMesh.uvs, chunkMesh.light);
 	}
 	
 	public void renderChunk() {

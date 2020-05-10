@@ -52,16 +52,30 @@ public class mainLoop {
 		Map<Vector2i, Chunk> chunks = new HashMap<Vector2i, Chunk>();
 		World world=new World(chunks, new ModelTexture(loader.loadTexture("defaultPack")));
 		
-		for (int x = 0; x != 128; x++) {
-			for (int z = 0; z != 128; z++) { 
+		for (int x = 0; x != 64; x++) {
+			for (int z = 0; z != 64; z++) { 
 			//	int max_y=getRandomNumberInRange(0, 4);
-				for (int y = 0; y != 15; y++) {
+				for (int y = 0; y != 11; y++) {
+					if(y<9) {
+						if (world.setBlock(x, y, z, new Block(Block.STONE))==null){
+							world.spawnNewChunk(x, z);
+							world.setBlock(x, y, z, new Block(Block.STONE));
+						}						
+					} else
+					if (y==9) {
 						if (world.setBlock(x, y, z, new Block(Block.DIRT))==null){
 							world.spawnNewChunk(x, z);
 							world.setBlock(x, y, z, new Block(Block.DIRT));
 						}						
 					}
+					if (y==10) {
+						if (world.setBlock(x, y, z, new Block(Block.GRASS))==null){
+							world.spawnNewChunk(x, z);
+							world.setBlock(x, y, z, new Block(Block.GRASS));
+						}						
+					}
 				}
+			}
 		}
 		long timeStart=0;
 		long timeStop=0;
@@ -87,6 +101,7 @@ public class mainLoop {
 		Player player=new Player();
 
 		while (!Display.isCloseRequested()) {
+			timeStart=System.currentTimeMillis();
 			camera.move();
 
 			if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {  //player.getBlockLookAt(camera, chunks, 200);
@@ -101,7 +116,10 @@ public class mainLoop {
 				render.renderChunk(world.getChunks().get(vec), shader);
 			}			
 			
-			shader.stop();		    
+			shader.stop();		  
+			timeStop=System.currentTimeMillis();
+			timeStop-=timeStart;
+		//	System.out.printf("Rendered in: "+timeStop+" ms\r\n");
 		    DisplayManager.updateDisplay();
 		}
 		shader.cleanUp();

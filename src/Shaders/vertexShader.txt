@@ -1,6 +1,7 @@
 #version 150 core
 
 in vec3 position;
+in vec3 normals;
 in vec2 textureCoords;
 in float light;
 
@@ -15,6 +16,9 @@ void main()
 {
 	gl_Position=projectionMatrix*viewMatrix*transformationMatrix*vec4(position, 1.0);
 	pass_textureCoords=textureCoords;
-	float t=pow(light / 16f, 1.4f)+0.1;
-	pass_light=vec4(t, t, t, 1);
+	vec3 dir=vec3(0, 0, 0);
+	
+	float t=pow(light / 16f, 1.4f)+0.086;
+	float intensity = max(dot(normals, dir), t);
+	pass_light=vec4(intensity, intensity, intensity, 1);
 }

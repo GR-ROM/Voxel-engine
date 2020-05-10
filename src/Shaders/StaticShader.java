@@ -21,8 +21,9 @@ public class StaticShader extends ShaderProgram {
 	@Override
 	protected void bindAttributes() {
 		super.bindAttribute("position", 0);
-		super.bindAttribute("textureCoords", 1);
-		super.bindAttribute("lights", 2);
+		super.bindAttribute("normals", 1);
+		super.bindAttribute("textureCoords", 2);
+		super.bindAttribute("lights", 3);
 	}
 
 	@Override

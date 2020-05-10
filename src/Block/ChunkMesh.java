@@ -77,37 +77,37 @@ public class ChunkMesh {
 						if (!px) {
 							for (int k=0;k!=6;k++) {
 								Vector3f.add(blockPos, CubeModel.PX_POS[k], t);
-								vertices.add(new Vertex(new Vector3f(t), CubeModel.UV[k], CubeModel.NORMALS[k], 15));
+								vertices.add(new Vertex(new Vector3f(t), CubeModel.getUVByIndex(CubeModel.blockTypeToAtlasTextureIndex(block.type, CubeModel.SIDE), k), CubeModel.NORMALS[0], 10));
 							}
 						}
 						if (!py) {  
 							for (int k=0;k!=6;k++) { 
 								Vector3f.add(blockPos, CubeModel.PY_POS[k], t);
-								vertices.add(new Vertex(new Vector3f(t), CubeModel.UV[k], CubeModel.NORMALS[k], 10));
+								vertices.add(new Vertex(new Vector3f(t), CubeModel.getUVByIndex(CubeModel.blockTypeToAtlasTextureIndex(block.type, CubeModel.TOP), k), CubeModel.NORMALS[1], 12));
 							}
 						}
 						if (!pz) {  
 							for (int k=0;k!=6;k++) { 
 								Vector3f.add(blockPos, CubeModel.PZ_POS[k], t);
-								vertices.add(new Vertex(new Vector3f(t), CubeModel.UV[k], CubeModel.NORMALS[k], 6));
+								vertices.add(new Vertex(new Vector3f(t), CubeModel.getUVByIndex(CubeModel.blockTypeToAtlasTextureIndex(block.type, CubeModel.SIDE), k), CubeModel.NORMALS[2], 5));
 							}
 						}
 						if (!nx) {  
 							for (int k=0;k!=6;k++) {
 								Vector3f.add(blockPos, CubeModel.NX_POS[k], t);
-								vertices.add(new Vertex(new Vector3f(t), CubeModel.UV[k], CubeModel.NORMALS[k], 1));
+								vertices.add(new Vertex(new Vector3f(t), CubeModel.getUVByIndex(CubeModel.blockTypeToAtlasTextureIndex(block.type, CubeModel.SIDE), k), CubeModel.NORMALS[3], 5));
 							}
 						}
 						if (!ny) {  
 							for (int k=0;k!=6;k++) {
 								Vector3f.add(blockPos, CubeModel.NY_POS[k], t);
-								vertices.add(new Vertex(new Vector3f(t), CubeModel.UV[k], CubeModel.NORMALS[k], 1));
+								vertices.add(new Vertex(new Vector3f(t), CubeModel.getUVByIndex(CubeModel.blockTypeToAtlasTextureIndex(block.type, CubeModel.BOTTOM), k), CubeModel.NORMALS[4], 5));
 							}
 						}
 						if (!nz) {  
 							for (int k=0;k!=6;k++) {
 								Vector3f.add(blockPos, CubeModel.NZ_POS[k], t);
-								vertices.add(new Vertex(new Vector3f(t), CubeModel.UV[k], CubeModel.NORMALS[k], 1));
+								vertices.add(new Vertex(new Vector3f(t), CubeModel.getUVByIndex(CubeModel.blockTypeToAtlasTextureIndex(block.type, CubeModel.SIDE), k), CubeModel.NORMALS[5], 5));
 							}
 						}
 					}
@@ -122,9 +122,9 @@ public class ChunkMesh {
 			positionsList.add(vertices.get(i).positions.z);
 			uvsList.add(vertices.get(i).uvs.x);
 			uvsList.add(vertices.get(i).uvs.y);
-	//		normalsList.add(vertices.get(i).normals.x);
-	//		normalsList.add(vertices.get(i).normals.y);
-//			normalsList.add(vertices.get(i).normals.z);
+			normalsList.add(vertices.get(i).normals.x);
+			normalsList.add(vertices.get(i).normals.y);
+			normalsList.add(vertices.get(i).normals.z);
 			lightsList.add(vertices.get(i).light);
 		}
 		
@@ -136,7 +136,7 @@ public class ChunkMesh {
 		
 		for (int i = 0; i < positionsList.size(); i++) positions[i] = positionsList.get(i);
 		for (int i = 0; i < uvsList.size(); i++) uvs[i] = uvsList.get(i);
-	//	for (int i = 0; i < normalsList.size(); i++) normals[i] = normalsList.get(i);		
+		for (int i = 0; i < normalsList.size(); i++) normals[i] = normalsList.get(i);		
 		for (int i = 0; i != lightsList.size(); i++) light[i]=lightsList.get(i);
 		//for (int i = 0; i < indicesList.size(); i++) indices[i] = indicesList.get(i);
 		cleanup();
