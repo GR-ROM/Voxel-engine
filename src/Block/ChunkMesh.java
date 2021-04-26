@@ -67,13 +67,28 @@ public class ChunkMesh {
 						blockPos.z=z;
 						if (block==null) break;
 						if (block.type==Block.AIR) break;
-						if (chunk.getBlock(x+1, y, z).transparent) { px=false; }
-						if (chunk.getBlock(x-1, y, z).transparent) { nx=false; }
-						if (chunk.getBlock(x, y+1, z).transparent) { py=false; }
-						if (chunk.getBlock(x, y-1, z).transparent) { ny=false; }
-						if (chunk.getBlock(x, y, z+1).transparent) { pz=false; }
-						if (chunk.getBlock(x, y, z-1).transparent) { nz=false; }
-					 	
+						if (chunk.getBlock(x+1, y, z).transparent) px=false;
+						if (chunk.getBlock(x-1, y, z).transparent) nx=false;
+						if (chunk.getBlock(x, y+1, z).transparent) py=false;
+						if (chunk.getBlock(x, y-1, z).transparent) ny=false;
+						if (chunk.getBlock(x, y, z+1).transparent) pz=false;
+						if (chunk.getBlock(x, y, z-1).transparent) nz=false;
+					 	for (int l=0;l!=chunk.lights.size();l++) {
+							Light light=chunk.lights.get(l);
+							lightPos.x=light.x;
+							lightPos.y=light.y;
+							lightPos.z=light.z;
+					
+							blockPos.x=blockI.x;
+							blockPos.y=blockI.y;
+							blockPos.z=blockI.z;
+					
+							int distToLight=getDistanceBetweenVectors(blockPos, lightPos);
+							short lightLevel=(short)(light.lightLevel-distToLight);
+							if (distToLight<16) {
+								blockI.lightLevel=(short)(lightLevel);
+							}
+						}					
 						if (!px) {
 							for (int k=0;k!=6;k++) {
 								Vector3f.add(blockPos, CubeModel.PX_POS[k], t);
